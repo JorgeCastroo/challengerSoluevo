@@ -1,20 +1,42 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { ReactElement } from "react";
+import { SafeAreaView, StatusBar, Platform } from "react-native";
+import AppRoutes from "./src/routes/Routes";
+import theme from "./src/styles/theme";
+import { useTheme, ThemeProvider } from "styled-components";
 
-export default function App() {
+const ApplicationContent = () => {
+  const { colors: colorsOfTheme } = useTheme();
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <>
+      <>
+        <SafeAreaView
+          style={{ flex: 0, backgroundColor: colorsOfTheme.background }}
+        />
+
+        <SafeAreaView
+          style={{
+            flex: 1,
+            paddingVertical: Platform.OS === "ios" ? 16 : 0,
+            backgroundColor: colorsOfTheme.background,
+          }}
+        >
+          <StatusBar barStyle="light-content" backgroundColor={"#131418"} />
+          <AppRoutes />
+        </SafeAreaView>
+      </>
+    </>
+  );
+};
+
+function App(): ReactElement {
+  return (
+    <>
+      <ThemeProvider theme={theme}>
+        <ApplicationContent />
+      </ThemeProvider>
+    </>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
